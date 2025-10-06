@@ -1,24 +1,11 @@
-#include <stdio.h>
-
-int main()
-{
-  int dWidth, dHeight, fWidth, fHeight, fDeep;
-
-  scanf("%d%d", &dWidth, &dHeight);
-  scanf("%d%d%d", &fWidth, &fHeight, &fDeep);
-
-  
-  int res= 0;
-
-  if(fWidth < dWidth || fWidth < dHeight)
-  {
-    res += 1;
-  }
-  if (fHeight < dHeight || fHeight < dWidth) {
-    res += 1;
-  }
-  if(fDeep < dWidth || fDeep < dHeight) {
-    res += 1;
-  }
-  printf("%s %d\n", res > 1 ? "YES" : "NO", res);
-}
+int isPointInArea(struct Point p, struct Rect r)
+// {
+//   if (p.x < r.lt.x && p.x > r.rb.x && p.y < r.lt.y && p.y > r.rb.y)
+//   {
+//     return 1;
+//   }
+//   else
+//   {
+//     return 0;
+//   }
+// }
