@@ -37,8 +37,8 @@ void tossMoney(int *arr, int n, int *moneyK)
     }
 
     int sum = arr[i] + arr[i + 1];
-    printf("SUM: %d\n", sum);
     int equalM = sum / 2;
+    printf("HALF: %d, SUM: %d, a[i]: %d, a[j]: %d\n", equalM, sum, arr[i], arr[i+1]);
 
     arr[i] = equalM;
     arr[i + 1] = equalM;
