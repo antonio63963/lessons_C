@@ -1,105 +1,95 @@
-// #include <stdio.h>
 
-// #define N 100
-// typedef struct {
-//     char a[N];       // number is a[0]*10^0 + a[1]*10^1 + ..+ a[n]*10^n
-//     unsigned int n;  // наибольшая степень десяти
-// }Decimal;
-
-// void elong_print(Decimal x);
-
-// int main()
-// {
-//     Decimal x = {{7, 4, 1}, 2}; // число 147
-//     Decimal zero ={{0}, 0};     // число 0 представим как 0 умножить на 10 в степени 0
-//         Decimal l ={{0,9,8,7,6,5,4,3,2,1,0,9,8,7,6,5,4,3,2,1}, 19}; 
-
-//     elong_print(l);     // 147
-//     // elong_print(zero);  // 0
-
-//     return 0;
-// }
-
-// void elong_print(Decimal x) {
-//   int res = 0;
-//   int i = 0;
-//   for(i; i<= x.n; i++) {
-//     if(i == 0) {
-//       res += x.a[i] * 1;
-//     }
-//     else {
-//       int j = 1;
-//       int jres = x.a[i] >0 ? x.a[i] : 1;
-//       for(j; j<=i; j++) {
-//         jres *= 10;
-//       }
-//       res += jres;
-//     }
-//   }
-//   printf("%d\n", res);
-// }
 
 #include <stdio.h>
 
 // Максимальное количество цифр
-#define N 100 
+#define N 100
+#define min(a, b) a > b ? b : a
+#define max(a, b) a < b ? b : a
 
-typedef struct {
-    // a[i] хранит коэффициент (цифру) при 10^i
-    // a[0] - младшая цифра, a[n] - старшая цифра
-    char a[N];       
-    unsigned int n;  // наибольшая степень десяти (индекс старшей цифры)
+typedef struct
+{
+  // a[i] хранит коэффициент (цифру) при 10^i
+  // a[0] - младшая цифра, a[n] - старшая цифра
+  char a[N];
+  unsigned int n; // наибольшая степень десяти (индекс старшей цифры)
 } Decimal;
 
 /**
  * Печатает длинное число, представленное структурой Decimal.
  * Печать производится от старшей цифры (a[n]) к младшей (a[0]).
  */
-void elong_print(Decimal x) {
-    // 1. Обработка числа 0
-    // Если n = 0 и a[0] = 0, это число 0.
-    if (x.n == 0 && x.a[0] == 0) {
-        printf("0\n");
-        return;
-    }
-    
-    // 2. Печать цифр
-    // Итерируемся от старшей степени (x.n) до 0 включительно.
-    // i = x.n - старшая цифра (например, 1 для 147)
-    // i = 0 - младшая цифра (например, 7 для 147)
-    for (int i = x.n; i >= 0; i--) {
-        // Мы храним цифры как 'char' (целые числа от 0 до 9).
-        // Чтобы напечатать их как символ, нужно добавить ASCII-код '0'.
-        // Например, число 7 + '0' даст символ '7'.
-        printf("%c", x.a[i] + '0'); 
-    }
-    
-    // 3. Перевод строки в конце
-    printf("\n");
+void elong_print(Decimal x)
+{
+  if (x.n == 0 && x.a[0] == 0)
+  {
+    printf("0\n");
+    return;
+  }
+
+  for (int i = x.n; i >= 0; i--)
+  {
+    printf("%c", x.a[i] + '0');
+  }
+
+  printf("\n");
 }
 
+Decimal add(Decimal x, Decimal y)
+{
+  Decimal res;
+  int i;
+  int carry = 0; // Переменная для хранения переноса (0 или 1)
+
+  int max_len = x.n < y.n ? y.n : x.n;
+
+  for (i = 0; i < 100; i++)
+  {
+    res.a[i] = 0;
+  }
+
+  for (i = 0; i <= max_len; i++)
+  {
+    int digit_x = (i <= x.n) ? x.a[i] : 0;
+    int digit_y = (i <= y.n) ? y.a[i] : 0;
+
+    int sum = digit_x + digit_y + carry;
+
+    res.a[i] = sum % 10;
+
+    carry = sum / 10;
+  }
+
+  if (carry > 0)
+  {
+    if (i < 100)
+    {
+      res.a[i] = carry;
+      res.n = i; // Новая наибольшая степен
+    }
+    else
+    {
+
+      res.n = max_len;
+    }
+  }
+  else
+  {
+    res.n = max_len;
+  }
+
+  return res;
+}
 // -------------------------------------------------------------------
 
-int main() {
-    // Число 147: 7*10^0 + 4*10^1 + 1*10^2. n=2.
-    // Коэффициенты: a[0]=7, a[1]=4, a[2]=1.
-    Decimal x = {{7, 4, 1}, 2}; 
-    
-    // Число 0: 0*10^0. n=0.
-    // Коэффициенты: a[0]=0.
-    Decimal zero = {{0}, 0};     
-    
-    // Число 999: 9*10^0 + 9*10^1 + 9*10^2. n=2.
-    Decimal nine_nine_nine = {{9, 9, 9}, 2};
+int main()
+{
+  Decimal x = {{7, 4, 1}, 2}; // set number 147
+  Decimal y = {{3, 1}, 1};    // set number 13
+  Decimal res;
 
-    printf("Тест 147:\n");
-    elong_print(x);     // 147
+  res = add(x, y);  // res = x+y = 147+13 = 160
+  elong_print(res); // print 160
 
-    printf("\nТест 0:\n");
-    elong_print(zero);  // 0
-    
-    printf("\nТест 999:\n");
-    elong_print(nine_nine_nine); // 999
-
-    return 0;
+  return 0;
 }
