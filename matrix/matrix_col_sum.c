@@ -4,6 +4,7 @@
 #define COLUMNS 3
 
 int sum_col(int a[3][3], int icol);
+int sum_diag(int a[3][3]);
 
 int main()
 {
