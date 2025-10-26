@@ -1,0 +1,15 @@
+North 1
+East 3
+North 5
+South 7
+West 4
+North 2
+North 3
+East 2
+West 4
+South 3
+North 3
+West 2
+East 5
+South 4
+Treasure!
