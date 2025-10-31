@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+  char s[1000];
+  int amount = 0;
+
+  while(1==scanf("%1000s", s))  {
+    // printf("%s\n", s);
+
+  
+    if(strstr(s, "bomb") != NULL) {
+      char *curr = s;
+      while (strstr( curr, "bomb") != NULL)
+      {
+        curr+=strlen("bomb");
+        amount++;
+      }
+      
+    }
+  }
+
+  printf("%d\n", amount);
+  return 0;
+}
